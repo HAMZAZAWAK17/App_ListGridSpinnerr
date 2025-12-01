@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Menu Contact -->
+    <item
+        android:id="@+id/menu_contact"
+        android:title="Contact"
+        android:icon="@android:drawable/ic_menu_call"
+        app:showAsAction="ifRoom" />
+
+    <!-- Menu About -->
+    <item
+        android:id="@+id/menu_about"
+        android:title="À propos"
+        android:icon="@android:drawable/ic_menu_info_details"
+        app:showAsAction="ifRoom" />
+
+    <!-- Menu Quitter -->
+    <item
+        android:id="@+id/menu_quitter"
+        android:title="Quitter"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        app:showAsAction="never" />
+
+</menu>
+

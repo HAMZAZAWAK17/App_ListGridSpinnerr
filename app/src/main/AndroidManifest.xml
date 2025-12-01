@@ -27,6 +27,16 @@
             android:name=".ListActivity"
             android:exported="false" />
         <activity
+            android:name=".ContactActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainDrawerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App_ListGridSpinnerr" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
