@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Palette de couleurs moderne -->
+    <color name="primary">#1E88E5</color>
+    <color name="primary_dark">#1565C0</color>
+    <color name="primary_light">#42A5F5</color>
+    <color name="accent">#FF9800</color>
+    
+    <!-- Couleurs de fond -->
+    <color name="background_dark">#121212</color>
+    <color name="surface_dark">#1E1E1E</color>
+    <color name="card_background">#2C2C2C</color>
+    
+    <!-- Couleurs de texte -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B3B3B3</color>
+    
+    <!-- Autres -->
+    <color name="gradient_start">#80000000</color>
+    <color name="gradient_end">#00000000</color>
+</resources>
