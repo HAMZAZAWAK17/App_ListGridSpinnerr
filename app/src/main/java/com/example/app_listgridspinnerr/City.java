@@ -25,3 +25,4 @@ public class City implements Serializable {
         return description;
     }
 }
+
