@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,6 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App_ListGridSpinnerr">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA0uComR2wzSqIjdsS4yC97uOqTL6gH6SQ" />
+
         <activity
             android:name=".ImageListActivity"
             android:exported="false" />
@@ -31,6 +37,9 @@
             android:exported="false" />
         <activity
             android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MapActivity"
             android:exported="false" />
         <activity
             android:name=".MainDrawerActivity"

@@ -16,6 +16,13 @@
         android:icon="@android:drawable/ic_menu_info_details"
         app:showAsAction="ifRoom" />
 
+    <!-- Menu Map -->
+    <item
+        android:id="@+id/menu_map"
+        android:title="Map"
+        android:icon="@drawable/ic_map_pin"
+        app:showAsAction="ifRoom" />
+
     <!-- Menu Quitter -->
     <item
         android:id="@+id/menu_quitter"
@@ -24,4 +31,6 @@
         app:showAsAction="never" />
 
 </menu>
+
+
 

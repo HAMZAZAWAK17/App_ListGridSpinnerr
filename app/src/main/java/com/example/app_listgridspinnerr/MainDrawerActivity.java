@@ -66,6 +66,11 @@ public class MainDrawerActivity extends AppCompatActivity {
                     return true;
                 }
 
+                if (id == R.id.nav_map) {
+                    openScreen(MapActivity.class);
+                    return true;
+                }
+
                 if (id == R.id.nav_spinner) {
                     openScreen(SpinnerActivity.class);
                     return true;
@@ -109,4 +114,6 @@ public class MainDrawerActivity extends AppCompatActivity {
         }
     }
 }
+
+
 

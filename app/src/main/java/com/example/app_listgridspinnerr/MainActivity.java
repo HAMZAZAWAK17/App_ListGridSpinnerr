@@ -73,6 +73,13 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        // Menu Map
+        if (id == R.id.menu_map) {
+            openScreen(MapActivity.class);
+            Toast.makeText(this, "Menu Map cliqué", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
         // Menu Quitter
         if (id == R.id.menu_quitter) {
             // Fermer l'application
