@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/gradient_overlay">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/homeContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <!-- Header Section -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/headerCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="#30FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/logo"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="Logo"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bienvenue !"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF"
+                        android:shadowColor="#80000000"
+                        android:shadowDx="0"
+                        android:shadowDy="2"
+                        android:shadowRadius="4"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Que souhaitez-vous explorer ?"
+                        android:textSize="14sp"
+                        android:textColor="#E0FFFFFF"
+                        android:alpha="0.9"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Section Title -->
+        <TextView
+            android:id="@+id/sectionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="📱 Fonctionnalités"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:shadowColor="#80000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headerCard" />
+
+        <!-- Liste Button -->
+        <Button
+            android:id="@+id/btnList"
+            android:layout_width="0dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_glass_selector"
+            android:text="📋  Liste"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:shadowColor="#80000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            android:stateListAnimator="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sectionTitle" />
+
+        <!-- Spinner Button -->
+        <Button
+            android:id="@+id/btnSpin"
+            android:layout_width="0dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_glass_selector"
+            android:text="🔄  Spinner"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:shadowColor="#80000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            android:stateListAnimator="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnList" />
+
+        <!-- Grid Button -->
+        <Button
+            android:id="@+id/btnGrid"
+            android:layout_width="0dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_glass_selector"
+            android:text="⊞  Grid"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:shadowColor="#80000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            android:stateListAnimator="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnSpin" />
+
+        <!-- Image List Button -->
+        <Button
+            android:id="@+id/btnImageList"
+            android:layout_width="0dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_glass_selector"
+            android:text="🖼️  Liste Image"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:shadowColor="#80000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            android:stateListAnimator="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnGrid" />
+
+        <!-- Section Title 2 -->
+        <TextView
+            android:id="@+id/sectionTitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="🗺️ Navigation"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:shadowColor="#80000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnImageList" />
+
+        <!-- Drawer Button -->
+        <Button
+            android:id="@+id/btnDrawer"
+            android:layout_width="0dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/button_glass_selector"
+            android:text="☰  Menu Drawer"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:shadowColor="#80000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="4"
+            android:stateListAnimator="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sectionTitle2"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

@@ -1,98 +1,134 @@
 package com.example.app_listgridspinnerr;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.cardview.widget.CardView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private VideoView backgroundVideo;
+    private View logoCard, appTitle, appSubtitle, featuresLayout, swipeIndicator;
+    private CardView startButtonCard;
+    private Button btnLetsStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            v.setPadding(
-                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).left,
-                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).top,
-                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).right,
-                    insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
-            );
-            return insets;
+
+        // Initialize views
+        backgroundVideo = findViewById(R.id.backgroundVideo);
+        logoCard = findViewById(R.id.logoCard);
+        appTitle = findViewById(R.id.appTitle);
+        appSubtitle = findViewById(R.id.appSubtitle);
+        featuresLayout = findViewById(R.id.featuresLayout);
+        startButtonCard = findViewById(R.id.startButtonCard);
+        swipeIndicator = findViewById(R.id.swipeIndicator);
+        btnLetsStart = findViewById(R.id.btnLetsStart);
+
+        // Setup background video
+        setupBackgroundVideo();
+
+        // Setup animations
+        setupAnimations();
+
+        // Setup button click listener
+        btnLetsStart.setOnClickListener(v -> {
+            // Scale animation
+            Animation scaleDown = AnimationUtils.loadAnimation(this, R.anim.button_scale_down);
+            v.startAnimation(scaleDown);
+
+            v.postDelayed(() -> {
+                // Navigate to HomeActivity
+                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish(); // Close splash screen
+            }, 200);
         });
-
-        Button listButton = findViewById(R.id.btnList);
-        Button spinnerButton = findViewById(R.id.btnSpin);
-        Button gridButton = findViewById(R.id.btnGrid);
-        Button imageListButton = findViewById(R.id.btnImageList);
-        Button drawerButton = findViewById(R.id.btnDrawer);
-
-        listButton.setOnClickListener(v -> openScreen(ListActivity.class));
-        spinnerButton.setOnClickListener(v -> openScreen(SpinnerActivity.class));
-        gridButton.setOnClickListener(v -> openScreen(GridActivity.class));
-        imageListButton.setOnClickListener(v -> openScreen(ImageListActivity.class));
-        drawerButton.setOnClickListener(v -> openScreen(MainDrawerActivity.class));
     }
 
-    // ÉTAPE 1 : Créer le menu (inflater le fichier menu_test.xml)
+    private void setupBackgroundVideo() {
+        try {
+            String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.casablanca;
+            backgroundVideo.setVideoURI(Uri.parse(videoPath));
+
+            backgroundVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.setLooping(true);
+                    mp.setVolume(0f, 0f);
+                    backgroundVideo.start();
+                }
+            });
+
+            backgroundVideo.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    backgroundVideo.start();
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setupAnimations() {
+        // Logo zoom in
+        Animation zoomIn = AnimationUtils.loadAnimation(this, R.anim.zoom_in);
+        logoCard.startAnimation(zoomIn);
+
+        // Title slide down
+        Animation titleAnim = AnimationUtils.loadAnimation(this, R.anim.fade_slide_down);
+        titleAnim.setStartOffset(400);
+        appTitle.startAnimation(titleAnim);
+
+        // Subtitle slide down
+        Animation subtitleAnim = AnimationUtils.loadAnimation(this, R.anim.fade_slide_down);
+        subtitleAnim.setStartOffset(600);
+        appSubtitle.startAnimation(subtitleAnim);
+
+        // Features fade in
+        Animation featuresAnim = AnimationUtils.loadAnimation(this, R.anim.zoom_in);
+        featuresAnim.setStartOffset(800);
+        featuresLayout.startAnimation(featuresAnim);
+
+        // Button slide up
+        Animation buttonAnim = AnimationUtils.loadAnimation(this, R.anim.zoom_in);
+        buttonAnim.setStartOffset(1000);
+        startButtonCard.startAnimation(buttonAnim);
+
+        // Swipe indicator pulse
+        Animation pulseAnim = AnimationUtils.loadAnimation(this, R.anim.zoom_in);
+        pulseAnim.setStartOffset(1200);
+        swipeIndicator.startAnimation(pulseAnim);
+    }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Charger le fichier menu dans l'activité
-        getMenuInflater().inflate(R.menu.menu_test, menu);
-        return super.onCreateOptionsMenu(menu);
+    protected void onResume() {
+        super.onResume();
+        if (backgroundVideo != null && !backgroundVideo.isPlaying()) {
+            backgroundVideo.start();
+        }
     }
 
-    // ÉTAPE 2 : Gérer les clics sur les éléments du menu
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // Récupérer l'ID de l'élément cliqué
-        int id = item.getItemId();
-
-        // Menu Contact
-        if (id == R.id.menu_contact) {
-            // Naviguer vers l'activité Contact
-            openScreen(ContactActivity.class);
-            Toast.makeText(this, "Menu Contact cliqué", Toast.LENGTH_SHORT).show();
-            return true;
+    protected void onPause() {
+        super.onPause();
+        if (backgroundVideo != null && backgroundVideo.isPlaying()) {
+            backgroundVideo.pause();
         }
-
-        // Menu About
-        if (id == R.id.menu_about) {
-            // Naviguer vers l'activité About
-            openScreen(AboutActivity.class);
-            Toast.makeText(this, "Menu About cliqué", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
-        // Menu Map
-        if (id == R.id.menu_map) {
-            openScreen(MapActivity.class);
-            Toast.makeText(this, "Menu Map cliqué", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
-        // Menu Quitter
-        if (id == R.id.menu_quitter) {
-            // Fermer l'application
-            finish();
-            Toast.makeText(this, "Application fermée", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void openScreen(Class<?> destination) {
-        Intent intent = new Intent(this, destination);
-        startActivity(intent);
     }
 }
