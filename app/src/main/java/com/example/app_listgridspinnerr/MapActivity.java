@@ -1,26 +1,21 @@
 package com.example.app_listgridspinnerr;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
-import android.widget.MediaController;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,12 +27,15 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Displays four Moroccan cities on a Google Map with circular image markers.
- * Shows detailed city information card when marker is clicked.
+ * Shows detailed city information card with image gallery when marker is
+ * clicked.
  */
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -45,10 +43,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private ImageView cityImage;
     private TextView cityTitle;
     private TextView cityDescription;
-    private VideoView cityVideoView;
-    private CardView videoContainer;
+    private ViewPager2 imageViewPager;
     private ImageButton btnCloseCard;
-    private ImageButton btnPlayPause;
+    private ImageButton btnPrevImage;
+    private ImageButton btnNextImage;
+    private TextView imageCounter;
 
     // City data storage
     private Map<String, CityInfo> cityDataMap = new HashMap<>();
@@ -58,13 +57,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         String name;
         int imageRes;
         String description;
-        Integer videoRes; // Can be null if no video
+        List<Integer> galleryImages;
 
-        CityInfo(String name, int imageRes, String description, Integer videoRes) {
+        CityInfo(String name, int imageRes, String description, List<Integer> galleryImages) {
             this.name = name;
             this.imageRes = imageRes;
             this.description = description;
-            this.videoRes = videoRes;
+            this.galleryImages = galleryImages;
         }
     }
 
@@ -78,21 +77,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         cityImage = cityInfoCard.findViewById(R.id.cityImage);
         cityTitle = cityInfoCard.findViewById(R.id.cityTitle);
         cityDescription = cityInfoCard.findViewById(R.id.cityDescription);
-        cityVideoView = cityInfoCard.findViewById(R.id.cityVideoView);
-        videoContainer = cityInfoCard.findViewById(R.id.videoContainer);
+        imageViewPager = cityInfoCard.findViewById(R.id.imageViewPager);
         btnCloseCard = cityInfoCard.findViewById(R.id.btnCloseCard);
-        btnPlayPause = cityInfoCard.findViewById(R.id.btnPlayPause);
+        btnPrevImage = cityInfoCard.findViewById(R.id.btnPrevImage);
+        btnNextImage = cityInfoCard.findViewById(R.id.btnNextImage);
+        imageCounter = cityInfoCard.findViewById(R.id.imageCounter);
 
         // Initialize city data
         initializeCityData();
 
         // Close button listener
-        btnCloseCard.setOnClickListener(v -> {
-            cityInfoCard.setVisibility(View.GONE);
-            if (cityVideoView.isPlaying()) {
-                cityVideoView.stopPlayback();
-            }
-        });
+        btnCloseCard.setOnClickListener(v -> cityInfoCard.setVisibility(View.GONE));
 
         // Setup map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -103,13 +98,31 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void initializeCityData() {
+        // Casablanca gallery - using existing images for now
+        List<Integer> casablancaImages = Arrays.asList(
+                R.drawable.hassan2,
+                R.drawable.hassan2,
+                R.drawable.hassan2,
+                R.drawable.hassan2,
+                R.drawable.hassan2,
+                R.drawable.hassan2);
+
         cityDataMap.put("Casablanca", new CityInfo(
                 "Casablanca - Mosquée Hassan II",
                 R.drawable.hassan2,
                 "La Mosquée Hassan II est l'une des plus grandes mosquées au monde. " +
                         "Située sur la côte atlantique de Casablanca, elle peut accueillir 25 000 fidèles " +
                         "à l'intérieur et 80 000 sur son esplanade. Son minaret de 210 mètres est le plus haut du monde.",
-                R.raw.casablanca)); // Vidéo locale
+                casablancaImages));
+
+        // Rabat gallery
+        List<Integer> rabatImages = Arrays.asList(
+                R.drawable.hassanrabat,
+                R.drawable.hassanrabat,
+                R.drawable.hassanrabat,
+                R.drawable.hassanrabat,
+                R.drawable.hassanrabat,
+                R.drawable.hassanrabat);
 
         cityDataMap.put("Rabat", new CityInfo(
                 "Rabat - Tour Hassan",
@@ -117,7 +130,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "La Tour Hassan est un minaret d'une mosquée du XIIe siècle à Rabat. " +
                         "Haute de 44 mètres, elle devait atteindre 60 mètres. Le site abrite également " +
                         "le Mausolée Mohammed V, un chef-d'œuvre de l'architecture marocaine moderne.",
-                null)); // Pas de vidéo pour l'instant
+                rabatImages));
+
+        // Marrakech gallery
+        List<Integer> marrakechImages = Arrays.asList(
+                R.drawable.mosquee_koutoubia_marrakech,
+                R.drawable.mosquee_koutoubia_marrakech,
+                R.drawable.mosquee_koutoubia_marrakech,
+                R.drawable.mosquee_koutoubia_marrakech,
+                R.drawable.mosquee_koutoubia_marrakech,
+                R.drawable.mosquee_koutoubia_marrakech);
 
         cityDataMap.put("Marrakech", new CityInfo(
                 "Marrakech - Koutoubia",
@@ -125,7 +147,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 "La Koutoubia est le monument le plus célèbre de Marrakech. " +
                         "Son minaret de 77 mètres domine la médina et sert de modèle à la Giralda de Séville. " +
                         "Construite au XIIe siècle, elle est un symbole de l'art almohade.",
-                null)); // Pas de vidéo pour l'instant
+                marrakechImages));
+
+        // Tanger gallery
+        List<Integer> tangerImages = Arrays.asList(
+                R.drawable.tangerkasbah,
+                R.drawable.tangerkasbah,
+                R.drawable.tangerkasbah,
+                R.drawable.tangerkasbah,
+                R.drawable.tangerkasbah,
+                R.drawable.tangerkasbah);
 
         cityDataMap.put("Tanger", new CityInfo(
                 "Tanger - Kasbah",
@@ -134,7 +165,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         "Cette forteresse historique offre une vue panoramique sur la mer Méditerranée et l'océan Atlantique. "
                         +
                         "Elle abrite le palais du Sultan et des jardins magnifiques.",
-                null)); // Pas de vidéo pour l'instant
+                tangerImages));
     }
 
     @Override
@@ -164,7 +195,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             if (cityKey != null && cityDataMap.containsKey(cityKey)) {
                 showCityInfo(cityDataMap.get(cityKey));
             }
-            return true; // Consume the event
+            return true;
         });
 
         // Hide card when map is clicked
@@ -225,47 +256,38 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         cityTitle.setText(cityInfo.name);
         cityDescription.setText(cityInfo.description);
 
-        // Setup video if available
-        if (cityInfo.videoRes != null) {
-            videoContainer.setVisibility(View.VISIBLE);
+        // Setup image gallery
+        if (cityInfo.galleryImages != null && !cityInfo.galleryImages.isEmpty()) {
+            // Create and set adapter
+            ImageGalleryAdapter adapter = new ImageGalleryAdapter(cityInfo.galleryImages);
+            imageViewPager.setAdapter(adapter);
 
-            // Set video URI from raw resource
-            String videoPath = "android.resource://" + getPackageName() + "/" + cityInfo.videoRes;
-            cityVideoView.setVideoURI(Uri.parse(videoPath));
+            // Update counter
+            updateImageCounter(1, cityInfo.galleryImages.size());
 
-            // Setup media controller
-            MediaController mediaController = new MediaController(this);
-            mediaController.setAnchorView(cityVideoView);
-            cityVideoView.setMediaController(mediaController);
-
-            // Play/Pause button listener
-            btnPlayPause.setOnClickListener(v -> {
-                if (cityVideoView.isPlaying()) {
-                    cityVideoView.pause();
-                    btnPlayPause.setBackgroundResource(android.R.drawable.ic_media_play);
-                } else {
-                    cityVideoView.start();
-                    btnPlayPause.setBackgroundResource(android.R.drawable.ic_media_pause);
+            // Setup ViewPager2 page change callback
+            imageViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageSelected(int position) {
+                    super.onPageSelected(position);
+                    updateImageCounter(position + 1, cityInfo.galleryImages.size());
                 }
             });
 
-            // Auto-hide play button when video starts
-            cityVideoView.setOnPreparedListener(mp -> {
-                btnPlayPause.setVisibility(View.VISIBLE);
+            // Navigation buttons
+            btnPrevImage.setOnClickListener(v -> {
+                int currentItem = imageViewPager.getCurrentItem();
+                if (currentItem > 0) {
+                    imageViewPager.setCurrentItem(currentItem - 1, true);
+                }
             });
 
-            // Show play button when video completes
-            cityVideoView.setOnCompletionListener(mp -> {
-                btnPlayPause.setBackgroundResource(android.R.drawable.ic_media_play);
-                btnPlayPause.setVisibility(View.VISIBLE);
+            btnNextImage.setOnClickListener(v -> {
+                int currentItem = imageViewPager.getCurrentItem();
+                if (currentItem < cityInfo.galleryImages.size() - 1) {
+                    imageViewPager.setCurrentItem(currentItem + 1, true);
+                }
             });
-
-            // Reset video state
-            cityVideoView.seekTo(0);
-            btnPlayPause.setBackgroundResource(android.R.drawable.ic_media_play);
-            btnPlayPause.setVisibility(View.VISIBLE);
-        } else {
-            videoContainer.setVisibility(View.GONE);
         }
 
         // Show the card with animation
@@ -275,5 +297,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .alpha(1f)
                 .setDuration(300)
                 .start();
+    }
+
+    private void updateImageCounter(int current, int total) {
+        imageCounter.setText(current + " / " + total);
     }
 }

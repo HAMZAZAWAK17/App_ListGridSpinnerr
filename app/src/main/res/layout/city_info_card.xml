@@ -68,46 +68,79 @@
             android:lineSpacingExtra="4dp"
             android:gravity="start"/>
 
-        <!-- Video Section -->
+        <!-- Image Gallery Section -->
         <TextView
-            android:id="@+id/videoLabel"
+            android:id="@+id/galleryLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="🎥 Vidéo de présentation"
+            android:text="📸 Galerie d'images"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="#1976D2"
             android:gravity="center"/>
 
-        <!-- Video Player -->
+        <!-- Image Gallery with Navigation -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/videoContainer"
+            android:id="@+id/galleryContainer"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="220dp"
             android:layout_marginTop="12dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            android:visibility="gone">
+            app:cardElevation="4dp">
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <VideoView
-                    android:id="@+id/cityVideoView"
+                <!-- ViewPager2 for image gallery -->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/imageViewPager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-                <!-- Play/Pause Overlay -->
+                <!-- Left Navigation Button -->
                 <ImageButton
-                    android:id="@+id/btnPlayPause"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:background="@android:drawable/ic_media_play"
-                    android:contentDescription="Lecture/Pause"
-                    android:alpha="0.8"/>
+                    android:id="@+id/btnPrevImage"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_vertical|start"
+                    android:layout_marginStart="8dp"
+                    android:background="@android:color/transparent"
+                    android:src="@android:drawable/ic_media_previous"
+                    android:contentDescription="Image précédente"
+                    android:alpha="0.7"
+                    android:scaleType="fitCenter"/>
+
+                <!-- Right Navigation Button -->
+                <ImageButton
+                    android:id="@+id/btnNextImage"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginEnd="8dp"
+                    android:background="@android:color/transparent"
+                    android:src="@android:drawable/ic_media_next"
+                    android:contentDescription="Image suivante"
+                    android:alpha="0.7"
+                    android:scaleType="fitCenter"/>
+
+                <!-- Image Counter -->
+                <TextView
+                    android:id="@+id/imageCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:background="#80000000"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:text="1 / 6"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"/>
 
             </FrameLayout>
 
